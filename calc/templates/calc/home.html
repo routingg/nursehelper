@@ -1,0 +1,212 @@
+<!-- templates/calc/home.html -->
+{% extends 'calc/base.html' %}
+{% block content %}
+<div style="text-align: center; margin-bottom: 32px;">
+  <h1 style="margin: 50px 0 12px 0; display: inline-block;">SEONA의 슬기로운 간호사 생활</h1>
+  <p class="muted" style="font-size: 16px; max-width: 500px; margin: 0 auto;">언제나 멋진 언니를 항상 응원해 🪄✨</p>
+</div>
+
+
+<div class="grid grid-3" style="margin-top: 40px;">
+  <div class="card feature-card">
+    <div class="card-icon">⏱️</div>
+    <h3>IV 주입 시간 계산</h3>
+    <p class="muted">시작·종료 시간과 주입 간격을 기준으로<br>IV 주입 시간을 간편하게 계산해요.</p>
+    <a class="btn btn-primary" href="{% url 'calc:ivtime' %}" style="margin-top: 12px;">
+      바로 시작하기 →
+    </a>
+  </div>
+
+  <div class="card feature-card">
+    <div class="card-icon">💧</div>
+    <h3>수액 계산</h3>
+    <p class="muted">시작/종료 시간과 총 용량만 입력하면<br>gtt/min, sec/방울이 뚝딱!</p>
+    <a class="btn btn-primary" href="{% url 'calc:infusion' %}" style="margin-top: 12px;">
+      바로 시작하기 →
+    </a>
+  </div>
+  
+  <div class="card feature-card coming-soon">
+    <div class="card-icon">💊</div>
+    <h3>약물 계산</h3>
+    <p class="muted">농도·용량·시간 기반으로<br>속도와 용량을 쉽게 변환</p>
+    <a class="btn btn-primary" href="{% url 'calc:drug' %}" style="margin-top: 12px;">
+      바로 시작하기 →
+    </a>
+  </div>
+  
+  <!-- 기존 공백 카드 대신 -->
+<div class="card feature-card">
+  <div class="card-icon">📚</div>
+  <h3>공식 모음</h3>
+  <p class="muted">IV 계산 공식과 드롭팩터 표<br>예시 케이스까지 한눈에</p>
+  <a class="btn btn-primary" href="{% url 'calc:formulas' %}" style="margin-top: 12px;">
+    공식 보러가기 →
+  </a>
+</div>
+
+
+<div class="tips-section" style="margin-bottom: 48px; margin-top: 48px; text-align: center;">
+  <h2 style="font-size: 24px; margin-bottom: 16px;">💡 Tip</h2>
+  <div class="tip-box">
+    <p style="font-size: 15px; line-height: 1.7; color: var(--text-secondary);">
+      <strong style="color: var(--amber-600);">Day, Evening, Night</strong> 버튼을 누르면<br>
+      듀티 시간이 자동으로 설정돼요! 편하게 사용해보세요 🌟
+    </p>
+  </div>
+</div>
+
+<style>
+  .feature-card {
+    text-align: center;
+    padding: 32px 24px !important;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .card-icon {
+    font-size: 56px;
+    margin-bottom: 16px;
+    display: inline-block;
+    animation: bounce 2s ease-in-out infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  
+  .feature-card:nth-child(1) .card-icon { animation-delay: 0s; }
+  .feature-card:nth-child(2) .card-icon { animation-delay: 0.2s; }
+  .feature-card:nth-child(3) .card-icon { animation-delay: 0.4s; }
+  
+  .feature-card h3 {
+    font-size: 24px;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+  
+  .feature-card .muted {
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+  
+  .coming-soon {
+    opacity: 0.85;
+  }
+  
+  .coming-soon:hover {
+    opacity: 1;
+  }
+  
+  .tips-section {
+    animation: fadeInUp 0.8s ease-out 0.3s both;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .tip-box {
+    background: var(--gradient-soft);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 24px 32px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .btn-primary {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn-primary::before {
+    content: '✨';
+    position: absolute;
+    left: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  .btn-primary:hover::before {
+    left: 12px;
+    opacity: 1;
+  }
+  
+  .btn-primary:hover {
+    padding-left: 36px;
+  }
+  
+  /* ========================
+     Responsive styles for home 📱
+     ======================== */
+  @media (max-width: 768px) {
+    .feature-card {
+      padding: 24px 20px !important;
+      min-height: auto;
+    }
+    
+    .card-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+    
+    .feature-card h3 {
+      font-size: 20px;
+    }
+    
+    .tip-box {
+      padding: 20px 24px;
+    }
+    
+    .btn-primary:hover::before {
+      display: none;
+    }
+    
+    .btn-primary:hover {
+      padding-left: 28px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .grid {
+      gap: 16px;
+    }
+    
+    .feature-card {
+      padding: 20px !important;
+    }
+    
+    .card-icon {
+      font-size: 40px;
+    }
+    
+    h1 {
+      font-size: 24px !important;
+      margin: 30px 0 12px 0 !important;
+    }
+    
+    .muted {
+      font-size: 14px !important;
+    }
+    
+    .tip-box {
+      padding: 16px 20px;
+    }
+  }
+</style>
+{% endblock %}

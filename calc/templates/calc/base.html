@@ -1,0 +1,333 @@
+{% load static %}
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <title>Nurse Helper 🌼</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root{
+      --bg: #FFF9F0;
+      --bg-pattern: #FFF5E8;
+      --surface: #FFFFFF;
+      --surface-soft: #FFFBF5;
+      --border: #FFE4C4;
+      --border-soft: #FFF0DC;
+      --text: #5C4A3A;
+      --text-secondary: #8B7355;
+      --text-muted: #A89680;
+
+      --amber-50:  #FFFBF0;
+      --amber-100: #FFF4DB;
+      --amber-200: #FFE8B8;
+      --amber-300: #FFD88A;
+      --amber-400: #FFC857;
+      --amber-500: #FFB830;
+
+      --gradient-sunny: linear-gradient(135deg,#FFE8B8,#FFC857,#FFB830);
+      --gradient-soft: linear-gradient(135deg,#FFFBF0,#FFF4DB);
+
+      --shadow-xs: 0 2px 4px rgba(255,200,87,0.08);
+      --shadow-sm: 0 4px 12px rgba(255,200,87,0.12);
+      --shadow-md: 0 8px 24px rgba(255,200,87,0.18);
+
+      --radius: 20px;
+      --radius-xl: 32px;
+      --radius-pill: 999px;
+
+      --font: "Rounded Mplus 1c",-apple-system,"Apple SD Gothic Neo","Pretendard Variable",Pretendard,Roboto,"Noto Sans KR","Malgun Gothic",sans-serif;
+      --lh: 1.7;
+      --container: 1000px;
+      --gap: 20px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body{
+      min-height: 100%;
+      font-family: var(--font);
+      font-size: 15px;
+      line-height: var(--lh);
+      color: var(--text);
+      background: var(--bg);
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(255,228,184,0.3), transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255,200,87,0.2), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(255,229,236,0.15), transparent 50%);
+      background-attachment: fixed;
+    }
+
+    /* =============================
+       INPUT 클릭 불가 문제 FIX
+       ============================= */
+    input, select, textarea {
+      position: relative;
+      z-index: 20;
+    }
+
+    body::before,
+    body::after,
+    main::before,
+    main::after {
+      z-index: -1 !important;
+      pointer-events: none !important;
+    }
+
+    /* =============================
+       TIME INPUT — 최종 정상 버전
+       ============================= */
+    input[type="time"] {
+      -webkit-appearance: auto !important;
+      appearance: auto !important;
+      padding-right: 36px !important;
+      cursor: pointer;
+      color: var(--text) !important;
+    }
+
+    /* 내부 hour/minute 텍스트 색 강제 */
+    input[type=time]::-webkit-datetime-edit-text,
+    input[type=time]::-webkit-datetime-edit-hour-field,
+    input[type=time]::-webkit-datetime-edit-minute-field {
+      color: var(--text) !important;
+    }
+
+    /* 아이콘은 숨기되 기능 유지 */
+    input[type=time]::-webkit-calendar-picker-indicator {
+      opacity: 0 !important;
+      cursor: pointer;
+    }
+
+    /* ============================= */
+
+    .wrap{ max-width: var(--container); margin:0 auto; padding:0 clamp(20px,5vw,32px); }
+    main{ padding: 32px 0 80px; }
+
+    header{
+      position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(16px) saturate(200%);
+      background: rgba(255,255,255,0.85);
+    }
+
+    .nav{
+      display: flex; gap:16px;
+      align-items:center; justify-content:center;
+      min-height:72px; padding:16px 0;
+    }
+
+    .tabbar{
+      width: min(100%, 520px);
+      display: flex;
+      background: var(--gradient-soft);
+      border:2px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding:6px; gap:6px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .tab{
+      flex:1; text-align:center;
+      appearance:none; border:0; background:transparent;
+      padding:12px 0; border-radius:var(--radius-pill);
+      font-size:15px; font-weight:700;
+      color:var(--text-muted);
+      cursor:pointer; transition:.3s;
+      text-decoration:none;
+    }
+
+    .tab.active{
+      background:var(--gradient-sunny);
+      color:white;
+      transform:scale(1.05);
+    }
+
+    .card{
+      background:var(--surface);
+      border:2px solid var(--border);
+      border-radius:var(--radius-xl);
+      padding: clamp(24px,5vw,36px);
+      box-shadow:var(--shadow-sm);
+      position:relative;
+    }
+
+    .grid{ display:grid; gap:var(--gap); }
+    .grid-2{ grid-template-columns:repeat(2,1fr); }
+
+    label{ font-size:14px; font-weight:700; margin-bottom:6px; display:block; }
+
+    input, select{
+      width:100%;
+      padding:14px 20px;
+      border:2px solid var(--border);
+      border-radius:var(--radius);
+      background:var(--surface);
+      color:var(--text);
+      font-size:15px; font-weight:600;
+      box-shadow:var(--shadow-xs);
+    }
+
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:14px 28px;
+      border-radius:var(--radius-pill);
+      cursor:pointer;
+      font-weight:700;
+    }
+
+    .btn-primary{
+      background:var(--gradient-sunny); color:white; border:none;
+    }
+
+    .alert{
+      background:#FFF5F5;
+      border:2px solid #FCA5A5;
+      padding:16px;
+      border-radius:var(--radius-lg);
+      color:#DC2626;
+    }
+
+    /* ============================================
+   RESPONSIVE OPTIMIZATION (FULL VERSION)
+   ============================================ */
+
+/* 모바일 기본 레이아웃 */
+@media (max-width: 600px) {
+
+  main {
+    padding: 20px 0 60px;
+  }
+
+  h1 {
+    font-size: 20px;
+    line-height: 1.4;
+  }
+
+  h3, h4 {
+    font-size: 16px;
+  }
+
+  .wrap {
+    padding: 0 16px;
+  }
+
+  /* 모바일에서 grid-2 → 1열 */
+  .grid-2 {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* 카드 패딩 축소 */
+  .card {
+    padding: 20px !important;
+    border-radius: 20px;
+  }
+
+  /* 버튼 전체 폭 */
+  .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+
+  /* NAV 반응형: 탭 균등 분배 */
+  .tabbar {
+    width: min(100%, 520px);
+    justify-content: space-between;
+    padding: 6px;
+  }
+
+  .tab {
+    flex: 1;
+    text-align: center;
+    padding: 12px 0;
+    font-size: 14px;
+  }
+
+  /* 입력창 크기 최적화 */
+  input, select {
+    padding: 12px 16px !important;
+    font-size: 15px !important;
+  }
+
+  input[type="time"] {
+    padding-right: 24px !important;
+  }
+
+  /* 작은 화면에서 글자 줄바꿈 허용 */
+  p, label {
+    word-break: keep-all;
+  }
+}
+
+
+/* 태블릿(중간 화면) 최적화 */
+@media (min-width: 601px) and (max-width: 991px) {
+
+  .wrap {
+    padding: 0 24px;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .card {
+    padding: 28px;
+  }
+
+  .tab {
+    padding: 12px 18px;
+  }
+}
+
+
+/* 큰 데스크탑에서 최대 폭 제한 */
+@media (min-width: 1200px) {
+  .wrap {
+    max-width: 1000px;
+  }
+}
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="wrap nav">
+      <div class="tabbar">
+        <a class="tab {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'calc:home' %}">🏠</a>
+        <a class="tab {% if request.resolver_match.url_name == 'ivtime' %}active{% endif %}" href="{% url 'calc:ivtime' %}">⏱️</a>
+        <a class="tab {% if request.resolver_match.url_name == 'infusion' %}active{% endif %}" href="{% url 'calc:infusion' %}">💧</a>
+        <a class="tab {% if request.resolver_match.url_name == 'drug' %}active{% endif %}" href="{% url 'calc:drug' %}">💊</a>
+        <a class="tab {% if request.resolver_match.url_name == 'formulas' %}active{% endif %}" href="{% url 'calc:formulas' %}">📚</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    {% block content %}{% endblock %}
+  </main>
+
+
+
+</body>
+
+<script>
+document.addEventListener("click", function(e){
+  const t = e.target;
+
+  if(t.matches("input[type='time']")) {
+    // Chrome 최신
+    if (t.showPicker) {
+      t.showPicker();
+    } else {
+      t.focus();
+    }
+  }
+});
+</script>
+
+
+</html>

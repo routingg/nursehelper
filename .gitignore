@@ -1,0 +1,7 @@
+/venv
+
+*.pem
+*.key
+
+.env
+*.env

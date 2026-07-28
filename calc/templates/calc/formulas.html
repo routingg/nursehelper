@@ -1,0 +1,84 @@
+{% extends 'calc/base.html' %}
+{% block content %}
+
+<h1 style="margin-bottom:12px;">공식 모음</h1>
+<p class="muted" style="margin-bottom:24px;">
+  수액/약물 계산에 자주 쓰이는 핵심 공식들을 모아두었습니다.
+  실제 계산은 상단 탭의 “💧 수액 계산”, “💊 약물 계산” 메뉴에서 진행하세요.
+</p>
+
+<!-- 수액 기본 공식 -->
+<section style="margin-bottom:32px;">
+  <h2 style="font-size:20px; margin-bottom:8px;">1) 수액 · 시간 · 속도 관계</h2>
+  <div class="card">
+    <p class="muted">
+      • 시간으로 처방: 전체 수액량 ÷ 유지시간 = <b>mL/hr</b><br>
+      • 유지시간: 전체 수액량 ÷ mL/hr<br>
+      • 하루 수액 개수: 24 ÷ 유지시간<br>
+      • 다음 수액 연결시간: 시작시간 + 유지시간<br>
+      • 1방울 = 0.05mL (DF=20 기준)<br>
+      • sec/1방울 = <b>180 ÷ mL/hr</b> (DF=20 기준)
+    </p>
+  </div>
+</section>
+
+<!-- 약물 기본 공식 -->
+<section style="margin-bottom:32px;">
+  <h2 style="font-size:20px; margin-bottom:8px;">2) 약물 계산 핵심 공식</h2>
+  <div class="card">
+    <p class="muted">
+      • 1g = 1,000mg = 1,000,000mcg<br>
+      • 1mL에 들어있는 약물량 = 총용량 ÷ 총부피<br>
+      • A : B = C : D → A×D = B×C (외항×외항 = 내항×내항)<br>
+      • 약물속도(mL/hr) = (투여량 mg ÷ 농도 mg/mL) ÷ 시간(hr)
+    </p>
+  </div>
+</section>
+
+<!-- sec/방울 표 -->
+<section style="margin-bottom:32px;">
+  <h2 style="font-size:20px; margin-bottom:8px;">3) 자주 쓰는 mL/hr → 초/1방울</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>mL/hr</th>
+        <th>초당 1방울</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>20</td><td>9초</td></tr>
+      <tr><td>30</td><td>6초</td></tr>
+      <tr><td>40</td><td>4.5초</td></tr>
+      <tr><td>50</td><td>4초</td></tr>
+      <tr><td>60</td><td>3초</td></tr>
+      <tr><td>80</td><td>2.3초</td></tr>
+      <tr><td>100</td><td>1.8초</td></tr>
+      <tr><td>200</td><td>0.9초</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 용량/시간별 속도 표 -->
+<section>
+  <h2 style="font-size:20px; margin-bottom:8px;">4) 자주 쓰는 용량·시간별 속도</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>용량(mL)</th>
+        <th>시간</th>
+        <th>필요 속도(mL/hr)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>50</td><td>15분</td><td>200</td></tr>
+      <tr><td>50</td><td>30분</td><td>100</td></tr>
+      <tr><td>50</td><td>1시간</td><td>50</td></tr>
+      <tr><td>100</td><td>15분</td><td>400</td></tr>
+      <tr><td>100</td><td>30분</td><td>200</td></tr>
+      <tr><td>100</td><td>1시간</td><td>100</td></tr>
+      <tr><td>200</td><td>1시간</td><td>200</td></tr>
+    </tbody>
+  </table>
+</section>
+
+{% endblock %}

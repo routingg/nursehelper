@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>수액 시간 계산기 🌼</title>
+  <style>
+    :root{
+      --bg:#FFF9F0; --surface:#FFFFFF; --surface-soft:#FFFBF5;
+      --border:#FFE4C4; --border-strong:#FFD88A;
+      --text:#5C4A3A; --muted:#8B7355; --light:#A89680;
+      --amber:#FFB830; --amber2:#FFC857;
+      --gradient:linear-gradient(135deg,#FFE8B8,#FFC857,#FFB830);
+      --gradient-soft:linear-gradient(135deg,#FFFBF0,#FFF4DB);
+      --shadow:0 8px 24px rgba(255,200,87,.16);
+      --radius:20px; --radius-xl:32px; --pill:999px;
+      --font:"Rounded Mplus 1c",-apple-system,"Apple SD Gothic Neo","Pretendard Variable",Pretendard,Roboto,"Noto Sans KR","Malgun Gothic",sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      min-height:100vh;font-family:var(--font);color:var(--text);font-size:15px;line-height:1.65;
+      background:var(--bg);
+      background-image:radial-gradient(circle at 20% 25%,rgba(255,228,184,.35),transparent 45%),radial-gradient(circle at 80% 72%,rgba(255,200,87,.22),transparent 45%);
+      background-attachment:fixed;
+    }
+    header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,228,196,.65)}
+    .nav{max-width:1000px;min-height:72px;margin:auto;padding:16px 20px;display:flex;align-items:center;justify-content:center}
+    .tabbar{width:min(100%,520px);display:flex;gap:6px;padding:6px;border:2px solid var(--border);border-radius:var(--pill);background:var(--gradient-soft);box-shadow:0 4px 12px rgba(255,200,87,.12)}
+    .tab{flex:1;padding:12px 0;border-radius:var(--pill);color:var(--muted);font-size:15px;font-weight:800;text-align:center;text-decoration:none;transition:.2s}
+    .tab:hover{background:#fff}
+    .tab.active{background:var(--gradient);color:#fff;box-shadow:0 5px 14px rgba(255,184,48,.25)}
+    main{max-width:1000px;margin:auto;padding:36px 24px 70px}
+    .hero{text-align:center;margin-bottom:28px}
+    h1{font-size:clamp(25px,4vw,38px);margin-bottom:8px}
+    h2{font-size:21px;margin-bottom:6px}
+    h3{font-size:17px}
+    .muted{color:var(--muted)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+    .card{background:var(--surface);border:2px solid var(--border);border-radius:var(--radius-xl);padding:clamp(22px,4vw,34px);box-shadow:var(--shadow)}
+    .section-head{display:flex;gap:12px;align-items:flex-start;margin-bottom:20px}
+    .icon{width:45px;height:45px;display:grid;place-items:center;border-radius:16px;background:var(--gradient-soft);font-size:24px;flex:0 0 auto}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+    .field.full{grid-column:1/-1}
+    label{display:block;font-size:14px;font-weight:800;margin-bottom:6px}
+    input,select{width:100%;padding:14px 17px;border:2px solid var(--border);border-radius:var(--radius);background:#fff;color:var(--text);font:inherit;font-weight:700;outline:none;transition:.2s}
+    input:focus,select:focus{border-color:var(--amber2);box-shadow:0 0 0 4px rgba(255,200,87,.14)}
+    input[type="time"]{cursor:pointer}
+    .btn-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+    button{border:0;font:inherit}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 23px;border-radius:var(--pill);font-weight:800;cursor:pointer;transition:.2s}
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{background:var(--gradient);color:white;box-shadow:0 5px 14px rgba(255,184,48,.25)}
+    .btn-ghost{background:var(--gradient-soft);color:var(--muted);border:2px solid var(--border)}
+    .result{display:none;margin-top:20px;padding:18px;border:2px solid var(--border-strong);border-radius:22px;background:linear-gradient(135deg,#FFFDF8,#FFF5DC)}
+    .result.show{display:block;animation:pop .25s ease-out}
+    @keyframes pop{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+    .big{font-size:clamp(25px,4vw,35px);font-weight:900;color:#B45309;letter-spacing:-.5px}
+    .sub-result{margin-top:8px;color:var(--muted)}
+    .schedule-list{display:grid;gap:10px;margin-top:14px}
+    .schedule-item{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:13px 15px;background:#fff;border:1.5px solid var(--border);border-radius:17px}
+    .number{width:31px;height:31px;display:grid;place-items:center;border-radius:50%;background:var(--gradient);color:#fff;font-weight:900}
+    .schedule-time{font-weight:900;text-align:right;white-space:nowrap}
+    .total-box{margin-top:13px;padding:13px 15px;border-radius:17px;background:#FFF4DB;font-weight:800}
+    .error{display:none;margin-top:14px;padding:12px 14px;border-radius:16px;background:#FFF1F2;border:1.5px solid #FDA4AF;color:#BE123C;font-weight:700}
+    .error.show{display:block}
+    .iv-row{display:grid;grid-template-columns:1fr 110px 110px 42px;gap:8px;align-items:end;margin-top:10px}
+    .remove{height:47px;border-radius:15px;background:#FFF1F2;color:#BE123C;font-size:20px;cursor:pointer;border:1.5px solid #FECDD3}
+    .example{margin-top:22px;padding:16px 18px;border-radius:20px;background:var(--surface-soft);border:1.5px dashed var(--border-strong);color:var(--muted)}
+    .notice{margin-top:24px;text-align:center;color:var(--light);font-size:13px}
+    @media(max-width:760px){.grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.iv-row{grid-template-columns:1fr 1fr 42px}.iv-name{grid-column:1/-1}.btn{width:100%}.schedule-item{grid-template-columns:auto 1fr}.schedule-time{grid-column:2;text-align:left}.card{border-radius:23px}main{padding:25px 16px 55px}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div class="tabbar">
+      <a class="tab" href="{% url 'calc:home' %}">🏠</a>
+      <a class="tab active" href="{% url 'calc:ivtime' %}">⏱️</a>
+      <a class="tab" href="{% url 'calc:infusion' %}">💧</a>
+      <a class="tab" href="{% url 'calc:drug' %}">💊</a>
+      <a class="tab" href="{% url 'calc:formulas' %}">📚</a>
+    </div>
+  </div>
+</header>
+<main>
+  <div class="hero">
+    <h1>수액 시간, 빠르게 계산해요</h1>
+    <p class="muted">시작·종료 시간의 차이와 여러 수액의 연결 시간을 자동으로 계산합니다.</p>
+  </div>
+
+  <div class="grid">
+    <section class="card">
+      <div class="section-head"><div class="icon">⏱️</div><div><h2>시작 → 종료 시간</h2><p class="muted">두 시각 사이 총 소요 시간을 계산합니다.</p></div></div>
+      <div class="form-grid">
+        <div class="field"><label for="startTime">시작 시간</label><input type="time" id="startTime" value="07:25"></div>
+        <div class="field"><label for="endTime">종료 시간</label><input type="time" id="endTime" value="11:15"></div>
+      </div>
+      <div class="btn-row"><button class="btn btn-primary" id="durationBtn">계산하기</button><button class="btn btn-ghost" id="swapBtn">시간 바꾸기</button></div>
+      <div class="error" id="durationError"></div>
+      <div class="result" id="durationResult">
+        <div class="muted">총 소요 시간</div><div class="big" id="durationText">3시간 50분</div>
+        <div class="sub-result" id="durationDetail"></div>
+      </div>
+      <div class="example">예시: 07:25 시작 → 11:15 종료 = <b>3시간 50분</b></div>
+    </section>
+
+    <section class="card">
+      <div class="section-head"><div class="icon">🔗</div><div><h2>연속 수액 연결 시간</h2><p class="muted">마지막 종료 시각을 기준으로 각 수액 시작 시각을 역산합니다.</p></div></div>
+      <div class="field"><label for="targetEnd">전체 종료 예정 시간</label><input type="time" id="targetEnd" value="11:50"></div>
+      <div id="ivRows"></div>
+      <div class="btn-row"><button class="btn btn-ghost" id="addIvBtn">＋ 수액 추가</button><button class="btn btn-primary" id="scheduleBtn">연결 시간 계산</button></div>
+      <div class="error" id="scheduleError"></div>
+      <div class="result" id="scheduleResult">
+        <div class="muted">전체 시작 예정 시간</div><div class="big" id="overallStart"></div>
+        <div class="total-box" id="totalDuration"></div><div class="schedule-list" id="scheduleList"></div>
+      </div>
+      <div class="example">기본 예시: 1번 수액 1시간 + 2번 수액 1시간 30분, 11:50 종료 → <b>09:20 시작</b></div>
+    </section>
+  </div>
+  <p class="notice">※ 시간 관리 참고용입니다. 실제 투여 순서·속도·처방은 의료기관 지침과 처방을 우선하세요.</p>
+</main>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const pad = (n) => String(n).padStart(2,'0');
+  const parseTime = (value) => { if(!/^\d{2}:\d{2}$/.test(value)) return null; const [h,m]=value.split(':').map(Number); return h*60+m; };
+  const formatClock = (minutes) => { minutes=((minutes%1440)+1440)%1440; return `${pad(Math.floor(minutes/60))}:${pad(minutes%60)}`; };
+  const formatDuration = (minutes) => { const h=Math.floor(minutes/60), m=minutes%60; return `${h ? h+'시간 ' : ''}${m ? m+'분' : h ? '' : '0분'}`.trim(); };
+  const showError = (el,msg) => { el.textContent=msg; el.classList.add('show'); };
+  const clearError = (el) => { el.textContent=''; el.classList.remove('show'); };
+
+  function calcDuration(){
+    clearError($('durationError'));
+    const start=parseTime($('startTime').value), end=parseTime($('endTime').value);
+    if(start===null || end===null){ showError($('durationError'),'시작 시간과 종료 시간을 모두 입력해 주세요.'); return; }
+    let diff=end-start, nextDay=false;
+    if(diff<0){ diff+=1440; nextDay=true; }
+    $('durationText').textContent=formatDuration(diff);
+    $('durationDetail').textContent=`총 ${diff}분${nextDay ? ' · 다음 날 종료로 계산' : ''}`;
+    $('durationResult').classList.add('show');
+  }
+  $('durationBtn').addEventListener('click',calcDuration);
+  $('swapBtn').addEventListener('click',()=>{ const a=$('startTime').value; $('startTime').value=$('endTime').value; $('endTime').value=a; calcDuration(); });
+
+  let ivCount=0;
+  function addIv(name='',hours=1,minutes=0){
+    ivCount++;
+    const row=document.createElement('div'); row.className='iv-row'; row.dataset.id=ivCount;
+    row.innerHTML=`<div class="iv-name"><label>수액 이름</label><input type="text" class="iv-label" value="${name || ivCount+'번 수액'}" aria-label="수액 이름"></div>
+      <div><label>시간</label><input type="number" class="iv-hours" min="0" max="48" step="1" value="${hours}"></div>
+      <div><label>분</label><input type="number" class="iv-minutes" min="0" max="59" step="1" value="${minutes}"></div>
+      <button class="remove" type="button" title="삭제">×</button>`;
+    row.querySelector('.remove').addEventListener('click',()=>{ if(document.querySelectorAll('.iv-row').length>1) row.remove(); });
+    $('ivRows').appendChild(row);
+  }
+  addIv('1번 수액',1,0); addIv('2번 수액',1,30);
+  $('addIvBtn').addEventListener('click',()=>addIv('',1,0));
+
+  function calcSchedule(){
+    clearError($('scheduleError'));
+    const end=parseTime($('targetEnd').value);
+    if(end===null){ showError($('scheduleError'),'전체 종료 예정 시간을 입력해 주세요.'); return; }
+    const rows=[...document.querySelectorAll('.iv-row')];
+    const items=[];
+    for(const [index,row] of rows.entries()){
+      const label=row.querySelector('.iv-label').value.trim() || `${index+1}번 수액`;
+      const h=Number(row.querySelector('.iv-hours').value), m=Number(row.querySelector('.iv-minutes').value);
+      if(!Number.isFinite(h)||!Number.isFinite(m)||h<0||m<0||m>59||h*60+m<=0){ showError($('scheduleError'),`${label}의 시간을 올바르게 입력해 주세요.`); return; }
+      items.push({label,duration:Math.round(h*60+m)});
+    }
+    const total=items.reduce((sum,x)=>sum+x.duration,0);
+    let cursor=end-total;
+    $('overallStart').textContent=formatClock(cursor);
+    $('totalDuration').textContent=`총 소요 시간: ${formatDuration(total)} · 종료 ${formatClock(end)}`;
+    $('scheduleList').innerHTML='';
+    items.forEach((item,i)=>{
+      const start=cursor, finish=cursor+item.duration; cursor=finish;
+      const div=document.createElement('div'); div.className='schedule-item';
+      div.innerHTML=`<div class="number">${i+1}</div><div><b>${item.label}</b><div class="muted">${formatDuration(item.duration)}</div></div><div class="schedule-time">${formatClock(start)} → ${formatClock(finish)}</div>`;
+      $('scheduleList').appendChild(div);
+    });
+    $('scheduleResult').classList.add('show');
+  }
+  $('scheduleBtn').addEventListener('click',calcSchedule);
+  calcDuration(); calcSchedule();
+</script>
+</body>
+</html>

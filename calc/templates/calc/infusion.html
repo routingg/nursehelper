@@ -1,0 +1,111 @@
+{% extends 'calc/base.html' %}
+{% block content %}
+
+<h1 style="margin:0 0 12px 0">수액 계산</h1>
+<p class="muted">
+  시작–종료 <b>시간(HH:MM)</b>과 <b>수액 총 용량(mL)</b>을 입력하면  
+  필요한 <b>속도(mL/h)</b>, <b>1분당 방울수</b>,  
+  <b>1초당 몇 방울</b>, <b>1방울 떨어지는 데 걸리는 시간</b>을 자동 계산합니다.  
+  드립 팩터는 성인 기본값인 <b>20 gtt/mL</b>로 계산합니다.
+</p>
+
+<div class="card" style="margin-top:16px">
+  <form method="post">
+    {% csrf_token %}
+    <div class="grid grid-2">
+      <div>
+        <label>시작 시간 (HH:MM)</label>
+        <input type="time" name="start" id="start"
+               value="{{ inputs.start|default:'' }}" required>
+      </div>
+
+      <div>
+        <label>종료(마감) 시간 (HH:MM)</label>
+        <input type="time" name="end" id="end"
+               value="{{ inputs.end|default:'' }}" required>
+      </div>
+
+      <div>
+        <label>수액 총 용량 (mL)</label>
+        <input type="number" name="volume_ml" step="1" min="1"
+               value="{{ inputs.volume_ml|default:defaults.volume_ml }}" required>
+      </div>
+    </div>
+
+    <div style="margin-top:16px" class="row">
+      <button type="submit" class="btn">계산하기</button>
+      <button type="button" class="btn btn-ghost" onclick="fillNow(6)">지금부터 6시간</button>
+      <button type="button" class="btn btn-ghost" onclick="fillNow(12)">지금부터 12시간</button>
+      <button type="button" class="btn btn-ghost" onclick="fillNow(24)">지금부터 24시간</button>
+    </div>
+  </form>
+</div>
+
+
+{% if errors %}
+  <div class="card" style="margin-top:16px">
+    <h3>오류</h3>
+    <ul>
+      {% for e in errors %}
+        <li class="danger">{{ e }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+
+{% if result %}
+<div class="card" style="margin-top:16px">
+  <h3>결과</h3>
+
+  <p class="muted">
+    총 주입 시간: <span class="k">{{ result.duration_hours|floatformat:2 }}</span> 시간<br>
+    종료(보정): <span class="k">{{ result.end_time_adjusted }}</span>
+  </p>
+
+  <div style="margin-top:18px; padding:16px; background:#f0f9ff; border-radius:8px; border:2px solid #3b82f6;">
+    <p style="margin:0; font-size:1.3em;">
+      필요한 속도: <b style="font-size:1.2em; color:#1e40af;">{{ result.rate_mlh|floatformat:1 }}</b> mL/h
+    </p>
+  </div>
+
+  <h4 style="margin-top:18px;">방울 기준 (DF=20)</h4>
+  <p class="k">
+    1분당 방울 수 (gtt/min): {{ result.gtt_per_min|floatformat:1 }}<br>
+    1초당 방울 수: {{ result.drops_per_sec|floatformat:2 }} 방울
+  </p>
+
+  <div style="margin-top:12px; padding:16px; background:#fef3c7; border-radius:8px; border:2px solid #f59e0b;">
+    <p style="margin:0; font-size:1.3em;">
+      1방울 떨어지는 데 걸리는 시간: <b style="font-size:1.2em; color:#b45309;">{{ result.sec_per_drop|floatformat:2 }}</b> 초
+    </p>
+  </div>
+
+  <p class="muted" style="margin-top:10px;">
+    쉽게 말해, 1초에 {{ result.drops_per_sec|floatformat:2 }} 방울 떨어지고  
+    1방울 떨어지는 데 약 {{ result.sec_per_drop|floatformat:2 }}초가 걸린다는 의미입니다.
+  </p>
+
+  <div style="margin-top:16px">
+    <span class="badge">주의</span>
+    <span class="muted">이 계산은 참고용이며 항상 기관 프로토콜 및 처방을 우선하세요.</span>
+  </div>
+
+</div>
+{% endif %}
+
+
+<script>
+function fillNow(hours){
+  const now = new Date();
+  const startH = String(now.getHours()).padStart(2,'0');
+  const startM = String(now.getMinutes()).padStart(2,'0');
+  const end = new Date(now.getTime() + hours*3600*1000);
+  const endH = String(end.getHours()).padStart(2,'0');
+  const endM = String(end.getMinutes()).padStart(2,'0');
+  document.getElementById('start').value = `${startH}:${startM}`;
+  document.getElementById('end').value = `${endH}:${endM}`;
+}
+</script>
+
+{% endblock %}
