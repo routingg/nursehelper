@@ -2,6 +2,10 @@
 
 A simple Django web app that provides quick nursing/clinical calculators for IV infusion time, infusion rate, and drug dosage.
 
+**Live demo:** https://nursehelper.onrender.com
+
+> Hosted on Render's free tier — the instance spins down after inactivity, so the first request after a while may take ~30-50s to wake up.
+
 ## Features
 
 - **Infusion calculator** — enter start/end time and total volume (mL) to get mL/hr, gtt/min, and seconds per drop
