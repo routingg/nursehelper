@@ -2,45 +2,45 @@
 {% extends 'calc/base.html' %}
 {% block content %}
 <div style="text-align: center; margin-bottom: 32px;">
-  <h1 style="margin: 50px 0 12px 0; display: inline-block;">SEONA의 슬기로운 간호사 생활</h1>
-  <p class="muted" style="font-size: 16px; max-width: 500px; margin: 0 auto;">언제나 멋진 언니를 항상 응원해 🪄✨</p>
+  <h1 data-i18n="home_title" style="margin: 50px 0 12px 0; display: inline-block;">SEONA의 슬기로운 간호사 생활</h1>
+  <p class="muted" data-i18n="home_subtitle" style="font-size: 16px; max-width: 500px; margin: 0 auto;">언제나 멋진 언니를 항상 응원해 🪄✨</p>
 </div>
 
 
 <div class="grid grid-3" style="margin-top: 40px;">
   <div class="card feature-card">
     <div class="card-icon">⏱️</div>
-    <h3>IV 주입 시간 계산</h3>
-    <p class="muted">시작·종료 시간과 주입 간격을 기준으로<br>IV 주입 시간을 간편하게 계산해요.</p>
-    <a class="btn btn-primary" href="{% url 'calc:ivtime' %}" style="margin-top: 12px;">
+    <h3 data-i18n="home_ivtime_title">IV 주입 시간 계산</h3>
+    <p class="muted" data-i18n="home_ivtime_desc">시작·종료 시간과 주입 간격을 기준으로<br>IV 주입 시간을 간편하게 계산해요.</p>
+    <a class="btn btn-primary" href="{% url 'calc:ivtime' %}" data-i18n="home_start_cta" style="margin-top: 12px;">
       바로 시작하기 →
     </a>
   </div>
 
   <div class="card feature-card">
     <div class="card-icon">💧</div>
-    <h3>수액 계산</h3>
-    <p class="muted">시작/종료 시간과 총 용량만 입력하면<br>gtt/min, sec/방울이 뚝딱!</p>
-    <a class="btn btn-primary" href="{% url 'calc:infusion' %}" style="margin-top: 12px;">
+    <h3 data-i18n="home_infusion_title">수액 계산</h3>
+    <p class="muted" data-i18n="home_infusion_desc">시작/종료 시간과 총 용량만 입력하면<br>gtt/min, sec/방울이 뚝딱!</p>
+    <a class="btn btn-primary" href="{% url 'calc:infusion' %}" data-i18n="home_start_cta" style="margin-top: 12px;">
       바로 시작하기 →
     </a>
   </div>
-  
+
   <div class="card feature-card coming-soon">
     <div class="card-icon">💊</div>
-    <h3>약물 계산</h3>
-    <p class="muted">농도·용량·시간 기반으로<br>속도와 용량을 쉽게 변환</p>
-    <a class="btn btn-primary" href="{% url 'calc:drug' %}" style="margin-top: 12px;">
+    <h3 data-i18n="home_drug_title">약물 계산</h3>
+    <p class="muted" data-i18n="home_drug_desc">농도·용량·시간 기반으로<br>속도와 용량을 쉽게 변환</p>
+    <a class="btn btn-primary" href="{% url 'calc:drug' %}" data-i18n="home_start_cta" style="margin-top: 12px;">
       바로 시작하기 →
     </a>
   </div>
-  
+
   <!-- 기존 공백 카드 대신 -->
 <div class="card feature-card">
   <div class="card-icon">📚</div>
-  <h3>공식 모음</h3>
-  <p class="muted">IV 계산 공식과 드롭팩터 표<br>예시 케이스까지 한눈에</p>
-  <a class="btn btn-primary" href="{% url 'calc:formulas' %}" style="margin-top: 12px;">
+  <h3 data-i18n="home_formulas_title">공식 모음</h3>
+  <p class="muted" data-i18n="home_formulas_desc">IV 계산 공식과 드롭팩터 표<br>예시 케이스까지 한눈에</p>
+  <a class="btn btn-primary" href="{% url 'calc:formulas' %}" data-i18n="home_formulas_cta" style="margin-top: 12px;">
     공식 보러가기 →
   </a>
 </div>
@@ -49,7 +49,7 @@
 <div class="tips-section" style="margin-bottom: 48px; margin-top: 48px; text-align: center;">
   <h2 style="font-size: 24px; margin-bottom: 16px;">💡 Tip</h2>
   <div class="tip-box">
-    <p style="font-size: 15px; line-height: 1.7; color: var(--text-secondary);">
+    <p data-i18n="home_tip_body" style="font-size: 15px; line-height: 1.7; color: var(--text-secondary);">
       <strong style="color: var(--amber-600);">Day, Evening, Night</strong> 버튼을 누르면<br>
       듀티 시간이 자동으로 설정돼요! 편하게 사용해보세요 🌟
     </p>

@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="ko">
 <head>
@@ -24,7 +25,11 @@
       background-attachment:fixed;
     }
     header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,228,196,.65)}
-    .nav{max-width:1000px;min-height:72px;margin:auto;padding:16px 20px;display:flex;align-items:center;justify-content:center}
+    .nav{max-width:1000px;min-height:72px;margin:auto;padding:16px 20px;display:flex;align-items:center;justify-content:center;position:relative}
+    .lang-switch{position:absolute;top:50%;right:20px;transform:translateY(-50%);display:flex;gap:4px;background:var(--surface);border:2px solid var(--border);border-radius:var(--pill);padding:4px}
+    .lang-switch button{appearance:none;border:0;background:transparent;padding:6px 10px;border-radius:var(--pill);font-size:12px;font-weight:800;color:var(--muted);cursor:pointer;transition:.2s}
+    .lang-switch button.active{background:var(--gradient);color:#fff}
+    @media(max-width:600px){.lang-switch{position:static;transform:none;margin-bottom:8px}.nav{flex-direction:column}}
     .tabbar{width:min(100%,520px);display:flex;gap:6px;padding:6px;border:2px solid var(--border);border-radius:var(--pill);background:var(--gradient-soft);box-shadow:0 4px 12px rgba(255,200,87,.12)}
     .tab{flex:1;padding:12px 0;border-radius:var(--pill);color:var(--muted);font-size:15px;font-weight:800;text-align:center;text-decoration:none;transition:.2s}
     .tab:hover{background:#fff}
@@ -73,6 +78,11 @@
 <body>
 <header>
   <div class="nav">
+    <div class="lang-switch">
+      <button type="button" data-lang="ko">KO</button>
+      <button type="button" data-lang="en">EN</button>
+      <button type="button" data-lang="zh">中</button>
+    </div>
     <div class="tabbar">
       <a class="tab" href="{% url 'calc:home' %}">🏠</a>
       <a class="tab active" href="{% url 'calc:ivtime' %}">⏱️</a>
@@ -84,58 +94,60 @@
 </header>
 <main>
   <div class="hero">
-    <h1>수액 시간, 빠르게 계산해요</h1>
-    <p class="muted">시작·종료 시간의 차이와 여러 수액의 연결 시간을 자동으로 계산합니다.</p>
+    <h1 data-i18n="ivtime_h1">수액 시간, 빠르게 계산해요</h1>
+    <p class="muted" data-i18n="ivtime_subtitle">시작·종료 시간의 차이와 여러 수액의 연결 시간을 자동으로 계산합니다.</p>
   </div>
 
   <div class="grid">
     <section class="card">
-      <div class="section-head"><div class="icon">⏱️</div><div><h2>시작 → 종료 시간</h2><p class="muted">두 시각 사이 총 소요 시간을 계산합니다.</p></div></div>
+      <div class="section-head"><div class="icon">⏱️</div><div><h2 data-i18n="ivtime_sec1_title">시작 → 종료 시간</h2><p class="muted" data-i18n="ivtime_sec1_desc">두 시각 사이 총 소요 시간을 계산합니다.</p></div></div>
       <div class="form-grid">
-        <div class="field"><label for="startTime">시작 시간</label><input type="time" id="startTime" value="07:25"></div>
-        <div class="field"><label for="endTime">종료 시간</label><input type="time" id="endTime" value="11:15"></div>
+        <div class="field"><label for="startTime" data-i18n="start_time_label">시작 시간</label><input type="time" id="startTime" value="07:25"></div>
+        <div class="field"><label for="endTime" data-i18n="end_time_label">종료 시간</label><input type="time" id="endTime" value="11:15"></div>
       </div>
-      <div class="btn-row"><button class="btn btn-primary" id="durationBtn">계산하기</button><button class="btn btn-ghost" id="swapBtn">시간 바꾸기</button></div>
+      <div class="btn-row"><button class="btn btn-primary" id="durationBtn" data-i18n="calc_btn">계산하기</button><button class="btn btn-ghost" id="swapBtn" data-i18n="swap_time_btn">시간 바꾸기</button></div>
       <div class="error" id="durationError"></div>
       <div class="result" id="durationResult">
-        <div class="muted">총 소요 시간</div><div class="big" id="durationText">3시간 50분</div>
+        <div class="muted" data-i18n="total_duration_label">총 소요 시간</div><div class="big" id="durationText">3시간 50분</div>
         <div class="sub-result" id="durationDetail"></div>
       </div>
-      <div class="example">예시: 07:25 시작 → 11:15 종료 = <b>3시간 50분</b></div>
+      <div class="example" data-i18n="ivtime_example1">예시: 07:25 시작 → 11:15 종료 = <b>3시간 50분</b></div>
     </section>
 
     <section class="card">
-      <div class="section-head"><div class="icon">🔗</div><div><h2>연속 수액 연결 시간</h2><p class="muted">마지막 종료 시각을 기준으로 각 수액 시작 시각을 역산합니다.</p></div></div>
-      <div class="field"><label for="targetEnd">전체 종료 예정 시간</label><input type="time" id="targetEnd" value="11:50"></div>
+      <div class="section-head"><div class="icon">🔗</div><div><h2 data-i18n="ivtime_sec2_title">연속 수액 연결 시간</h2><p class="muted" data-i18n="ivtime_sec2_desc">마지막 종료 시각을 기준으로 각 수액 시작 시각을 역산합니다.</p></div></div>
+      <div class="field"><label for="targetEnd" data-i18n="target_end_label">전체 종료 예정 시간</label><input type="time" id="targetEnd" value="11:50"></div>
       <div id="ivRows"></div>
-      <div class="btn-row"><button class="btn btn-ghost" id="addIvBtn">＋ 수액 추가</button><button class="btn btn-primary" id="scheduleBtn">연결 시간 계산</button></div>
+      <div class="btn-row"><button class="btn btn-ghost" id="addIvBtn" data-i18n="add_iv_btn">＋ 수액 추가</button><button class="btn btn-primary" id="scheduleBtn" data-i18n="calc_schedule_btn">연결 시간 계산</button></div>
       <div class="error" id="scheduleError"></div>
       <div class="result" id="scheduleResult">
-        <div class="muted">전체 시작 예정 시간</div><div class="big" id="overallStart"></div>
+        <div class="muted" data-i18n="overall_start_label">전체 시작 예정 시간</div><div class="big" id="overallStart"></div>
         <div class="total-box" id="totalDuration"></div><div class="schedule-list" id="scheduleList"></div>
       </div>
-      <div class="example">기본 예시: 1번 수액 1시간 + 2번 수액 1시간 30분, 11:50 종료 → <b>09:20 시작</b></div>
+      <div class="example" data-i18n="ivtime_example2">기본 예시: 1번 수액 1시간 + 2번 수액 1시간 30분, 11:50 종료 → <b>09:20 시작</b></div>
     </section>
   </div>
-  <p class="notice">※ 시간 관리 참고용입니다. 실제 투여 순서·속도·처방은 의료기관 지침과 처방을 우선하세요.</p>
+  <p class="notice" data-i18n="ivtime_notice">※ 시간 관리 참고용입니다. 실제 투여 순서·속도·처방은 의료기관 지침과 처방을 우선하세요.</p>
 </main>
+<script src="{% static 'calc/i18n.js' %}"></script>
 <script>
   const $ = (id) => document.getElementById(id);
+  const tr = (key) => window.NH_I18N.t(key, window.NH_I18N.getLang());
   const pad = (n) => String(n).padStart(2,'0');
   const parseTime = (value) => { if(!/^\d{2}:\d{2}$/.test(value)) return null; const [h,m]=value.split(':').map(Number); return h*60+m; };
   const formatClock = (minutes) => { minutes=((minutes%1440)+1440)%1440; return `${pad(Math.floor(minutes/60))}:${pad(minutes%60)}`; };
-  const formatDuration = (minutes) => { const h=Math.floor(minutes/60), m=minutes%60; return `${h ? h+'시간 ' : ''}${m ? m+'분' : h ? '' : '0분'}`.trim(); };
+  const formatDuration = (minutes) => { const h=Math.floor(minutes/60), m=minutes%60; return `${h ? h+tr('js_hour_unit') : ''}${m ? m+tr('js_minute_unit') : h ? '' : tr('js_zero_minutes')}`.trim(); };
   const showError = (el,msg) => { el.textContent=msg; el.classList.add('show'); };
   const clearError = (el) => { el.textContent=''; el.classList.remove('show'); };
 
   function calcDuration(){
     clearError($('durationError'));
     const start=parseTime($('startTime').value), end=parseTime($('endTime').value);
-    if(start===null || end===null){ showError($('durationError'),'시작 시간과 종료 시간을 모두 입력해 주세요.'); return; }
+    if(start===null || end===null){ showError($('durationError'),tr('js_enter_both_times')); return; }
     let diff=end-start, nextDay=false;
     if(diff<0){ diff+=1440; nextDay=true; }
     $('durationText').textContent=formatDuration(diff);
-    $('durationDetail').textContent=`총 ${diff}분${nextDay ? ' · 다음 날 종료로 계산' : ''}`;
+    $('durationDetail').textContent=`${tr('js_total_prefix')} ${diff}${tr('js_minute_unit')}${nextDay ? tr('js_next_day_suffix') : ''}`;
     $('durationResult').classList.add('show');
   }
   $('durationBtn').addEventListener('click',calcDuration);
@@ -145,32 +157,36 @@
   function addIv(name='',hours=1,minutes=0){
     ivCount++;
     const row=document.createElement('div'); row.className='iv-row'; row.dataset.id=ivCount;
-    row.innerHTML=`<div class="iv-name"><label>수액 이름</label><input type="text" class="iv-label" value="${name || ivCount+'번 수액'}" aria-label="수액 이름"></div>
-      <div><label>시간</label><input type="number" class="iv-hours" min="0" max="48" step="1" value="${hours}"></div>
-      <div><label>분</label><input type="number" class="iv-minutes" min="0" max="59" step="1" value="${minutes}"></div>
-      <button class="remove" type="button" title="삭제">×</button>`;
+    row.innerHTML=`<div class="iv-name"><label>${tr('js_iv_name_label')}</label><input type="text" class="iv-label" value="${name || ivCount+tr('js_iv_name_suffix')}" aria-label="${tr('js_iv_name_label')}"></div>
+      <div><label>${tr('js_hour_label')}</label><input type="number" class="iv-hours" min="0" max="48" step="1" value="${hours}"></div>
+      <div><label>${tr('js_minute_label')}</label><input type="number" class="iv-minutes" min="0" max="59" step="1" value="${minutes}"></div>
+      <button class="remove" type="button" title="${tr('js_delete_title')}">×</button>`;
     row.querySelector('.remove').addEventListener('click',()=>{ if(document.querySelectorAll('.iv-row').length>1) row.remove(); });
     $('ivRows').appendChild(row);
   }
-  addIv('1번 수액',1,0); addIv('2번 수액',1,30);
+  function resetDefaultRows(){
+    $('ivRows').innerHTML=''; ivCount=0;
+    addIv(`1${tr('js_iv_name_suffix')}`,1,0); addIv(`2${tr('js_iv_name_suffix')}`,1,30);
+  }
+  resetDefaultRows();
   $('addIvBtn').addEventListener('click',()=>addIv('',1,0));
 
   function calcSchedule(){
     clearError($('scheduleError'));
     const end=parseTime($('targetEnd').value);
-    if(end===null){ showError($('scheduleError'),'전체 종료 예정 시간을 입력해 주세요.'); return; }
+    if(end===null){ showError($('scheduleError'),tr('js_enter_target_end')); return; }
     const rows=[...document.querySelectorAll('.iv-row')];
     const items=[];
     for(const [index,row] of rows.entries()){
-      const label=row.querySelector('.iv-label').value.trim() || `${index+1}번 수액`;
+      const label=row.querySelector('.iv-label').value.trim() || `${index+1}${tr('js_iv_name_suffix')}`;
       const h=Number(row.querySelector('.iv-hours').value), m=Number(row.querySelector('.iv-minutes').value);
-      if(!Number.isFinite(h)||!Number.isFinite(m)||h<0||m<0||m>59||h*60+m<=0){ showError($('scheduleError'),`${label}의 시간을 올바르게 입력해 주세요.`); return; }
+      if(!Number.isFinite(h)||!Number.isFinite(m)||h<0||m<0||m>59||h*60+m<=0){ showError($('scheduleError'),`${label}${tr('js_invalid_time_for')}`); return; }
       items.push({label,duration:Math.round(h*60+m)});
     }
     const total=items.reduce((sum,x)=>sum+x.duration,0);
     let cursor=end-total;
     $('overallStart').textContent=formatClock(cursor);
-    $('totalDuration').textContent=`총 소요 시간: ${formatDuration(total)} · 종료 ${formatClock(end)}`;
+    $('totalDuration').textContent=`${tr('js_total_duration_prefix')} ${formatDuration(total)} ${tr('js_end_suffix')} ${formatClock(end)}`;
     $('scheduleList').innerHTML='';
     items.forEach((item,i)=>{
       const start=cursor, finish=cursor+item.duration; cursor=finish;
@@ -181,7 +197,18 @@
     $('scheduleResult').classList.add('show');
   }
   $('scheduleBtn').addEventListener('click',calcSchedule);
-  calcDuration(); calcSchedule();
+
+  function refreshIvRowLabels(){
+    document.querySelectorAll('.iv-row').forEach((row) => {
+      row.querySelectorAll('label')[0].textContent = tr('js_iv_name_label');
+      row.querySelectorAll('label')[1].textContent = tr('js_hour_label');
+      row.querySelectorAll('label')[2].textContent = tr('js_minute_label');
+      row.querySelector('.remove').title = tr('js_delete_title');
+    });
+  }
+
+  document.addEventListener('nh:langchange', () => { refreshIvRowLabels(); calcDuration(); calcSchedule(); });
+  document.addEventListener('DOMContentLoaded', () => { calcDuration(); calcSchedule(); });
 </script>
 </body>
 </html>

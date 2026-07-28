@@ -1,8 +1,8 @@
 {% extends 'calc/base.html' %}
 {% block content %}
 
-<h1 style="margin-bottom:12px;">약물 계산</h1>
-<p class="muted" style="margin-bottom:24px;">
+<h1 data-i18n="drug_h1" style="margin-bottom:12px;">약물 계산</h1>
+<p class="muted" data-i18n="drug_intro" style="margin-bottom:24px;">
   농도(mg/mL), 필요한 용량(mL), 속도(mL/hr), mg/hr 등을 계산합니다.
   실제 병동에서 자주 쓰는 4가지 연산을 모두 포함합니다.
 </p>
@@ -11,7 +11,7 @@
 <div class="alert" style="margin-bottom:16px;">
   <ul style="margin:0; padding-left:18px;">
     {% for e in errors %}
-    <li>{{ e }}</li>
+    <li data-i18n-src="errors">{{ e }}</li>
     {% endfor %}
   </ul>
 </div>
@@ -21,105 +21,105 @@
 
   <!-- 1) 농도 계산 -->
   <div class="card">
-    <h3>1) 농도 계산 (mg/mL)</h3>
+    <h3 data-i18n="drug_card1_title">1) 농도 계산 (mg/mL)</h3>
     <form method="post">
       {% csrf_token %}
       <input type="hidden" name="mode" value="calc_concentration">
       <div class="form-row">
-        <label>총 용량 (mg)</label>
+        <label data-i18n="total_mg_label">총 용량 (mg)</label>
         <input type="number" name="total_mg" step="0.1" placeholder="예: 100">
       </div>
       <div class="form-row">
-        <label>총 부피 (mL)</label>
+        <label data-i18n="total_ml_label">총 부피 (mL)</label>
         <input type="number" name="total_ml" step="0.1" placeholder="예: 50">
       </div>
-      <button class="btn btn-primary" style="margin-top:8px;">계산하기</button>
+      <button class="btn btn-primary" data-i18n="calc_btn" style="margin-top:8px;">계산하기</button>
     </form>
 
     {% if result.concentration %}
     <hr>
-    <p>농도: <b class="k">{{ result.concentration|floatformat:2 }}</b> mg/mL</p>
+    <p><span data-i18n="drug_concentration_result">농도:</span> <b class="k">{{ result.concentration|floatformat:2 }}</b> mg/mL</p>
     {% endif %}
   </div>
 
   <!-- 2) 필요한 용량(mL) 계산 -->
   <div class="card">
-    <h3>2) 필요한 용량 계산 (mg → mL)</h3>
+    <h3 data-i18n="drug_card2_title">2) 필요한 용량 계산 (mg → mL)</h3>
     <form method="post">
       {% csrf_token %}
       <input type="hidden" name="mode" value="calc_required_ml">
       <div class="form-row">
-        <label>원하는 용량 (mg)</label>
+        <label data-i18n="desired_mg_label">원하는 용량 (mg)</label>
         <input type="number" name="desired_mg" step="0.1" placeholder="예: 50">
       </div>
       <div class="form-row">
-        <label>농도 (mg/mL)</label>
+        <label data-i18n="conc_label">농도 (mg/mL)</label>
         <input type="number" name="conc" step="0.1" placeholder="예: 10">
       </div>
-      <button class="btn btn-primary" style="margin-top:8px;">계산하기</button>
+      <button class="btn btn-primary" data-i18n="calc_btn" style="margin-top:8px;">계산하기</button>
     </form>
 
     {% if result.needed_ml %}
     <hr>
-    <p>{{ result.needed_ml|floatformat:2 }} mL 필요</p>
+    <p><b class="k">{{ result.needed_ml|floatformat:2 }}</b> <span data-i18n="drug_needed_ml_suffix">mL 필요</span></p>
     {% endif %}
   </div>
 
   <!-- 3) 속도(mL/hr) 계산 -->
   <div class="card">
-    <h3>3) 속도 계산 (mL/hr)</h3>
+    <h3 data-i18n="drug_card3_title">3) 속도 계산 (mL/hr)</h3>
     <form method="post">
       {% csrf_token %}
       <input type="hidden" name="mode" value="calc_rate">
       <div class="form-row">
-        <label>투여할 용량 (mg)</label>
+        <label data-i18n="rate_desired_mg_label">투여할 용량 (mg)</label>
         <input type="number" name="rate_desired_mg" step="0.1" placeholder="예: 50">
       </div>
       <div class="form-row">
-        <label>농도 (mg/mL)</label>
+        <label data-i18n="conc_label">농도 (mg/mL)</label>
         <input type="number" name="rate_conc" step="0.1" placeholder="예: 5">
       </div>
       <div class="form-row">
-        <label>투약 시간 (시간)</label>
+        <label data-i18n="rate_hours_label">투약 시간 (시간)</label>
         <input type="number" name="rate_hours" step="0.1" placeholder="예: 1">
       </div>
-      <button class="btn btn-primary" style="margin-top:8px;">계산하기</button>
+      <button class="btn btn-primary" data-i18n="calc_btn" style="margin-top:8px;">계산하기</button>
     </form>
 
     {% if result.ml_per_hr %}
     <hr>
     <p>
-      총 필요량: <b class="k">{{ result.need_ml_for_rate|floatformat:2 }}</b> mL<br>
-      속도: <b class="k">{{ result.ml_per_hr|floatformat:2 }}</b> mL/hr
+      <span data-i18n="drug_total_needed">총 필요량:</span> <b class="k">{{ result.need_ml_for_rate|floatformat:2 }}</b> mL<br>
+      <span data-i18n="drug_rate_label">속도:</span> <b class="k">{{ result.ml_per_hr|floatformat:2 }}</b> mL/hr
     </p>
     {% endif %}
   </div>
 
   <!-- 4) mg/hr 계산 -->
   <div class="card">
-    <h3>4) mg/hr 계산 (속도 → 투여량)</h3>
+    <h3 data-i18n="drug_card4_title">4) mg/hr 계산 (속도 → 투여량)</h3>
     <form method="post">
       {% csrf_token %}
       <input type="hidden" name="mode" value="calc_mg_hr">
       <div class="form-row">
-        <label>속도 (mL/hr)</label>
+        <label data-i18n="rate_mlh_label">속도 (mL/hr)</label>
         <input type="number" name="rate_mlh" step="0.1" placeholder="예: 20">
       </div>
       <div class="form-row">
-        <label>농도 (mg/mL)</label>
+        <label data-i18n="conc_label">농도 (mg/mL)</label>
         <input type="number" name="mg_conc" step="0.1" placeholder="예: 4">
       </div>
-      <button class="btn btn-primary" style="margin-top:8px;">계산하기</button>
+      <button class="btn btn-primary" data-i18n="calc_btn" style="margin-top:8px;">계산하기</button>
     </form>
 
     {% if result.mg_hr %}
     <hr>
-    <p>약물 투여량: <b class="k">{{ result.mg_hr|floatformat:2 }}</b> mg/hr</p>
+    <p><span data-i18n="drug_dose_result">약물 투여량:</span> <b class="k">{{ result.mg_hr|floatformat:2 }}</b> mg/hr</p>
     {% endif %}
   </div>
 
 </div>
 
-<p class="muted">※ 본 계산기는 교육 및 참고용입니다. 최종 처방은 기관 프로토콜을 따르세요.</p>
+<p class="muted" data-i18n="drug_footer_note">※ 본 계산기는 교육 및 참고용입니다. 최종 처방은 기관 프로토콜을 따르세요.</p>
 
 {% endblock %}

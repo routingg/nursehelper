@@ -113,6 +113,27 @@
       display: flex; gap:16px;
       align-items:center; justify-content:center;
       min-height:72px; padding:16px 0;
+      position: relative;
+    }
+
+    .lang-switch{
+      position:absolute; top:50%; right:0; transform:translateY(-50%);
+      display:flex; gap:4px;
+      background:var(--surface); border:2px solid var(--border);
+      border-radius:var(--radius-pill); padding:4px;
+    }
+    .lang-switch button{
+      appearance:none; border:0; background:transparent;
+      padding:6px 10px; border-radius:var(--radius-pill);
+      font-size:12px; font-weight:700; color:var(--text-muted);
+      cursor:pointer; transition:.2s;
+    }
+    .lang-switch button.active{
+      background:var(--gradient-sunny); color:white;
+    }
+    @media (max-width:600px){
+      .lang-switch{ position:static; transform:none; margin-bottom:8px; }
+      .nav{ flex-direction:column; }
     }
 
     .tabbar{
@@ -296,6 +317,11 @@
 <body>
   <header>
     <div class="wrap nav">
+      <div class="lang-switch">
+        <button type="button" data-lang="ko">KO</button>
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="zh">中</button>
+      </div>
       <div class="tabbar">
         <a class="tab {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'calc:home' %}">🏠</a>
         <a class="tab {% if request.resolver_match.url_name == 'ivtime' %}active{% endif %}" href="{% url 'calc:ivtime' %}">⏱️</a>
@@ -314,6 +340,7 @@
 
 </body>
 
+<script src="{% static 'calc/i18n.js' %}"></script>
 <script>
 document.addEventListener("click", function(e){
   const t = e.target;

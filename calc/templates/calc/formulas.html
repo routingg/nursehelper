@@ -1,17 +1,17 @@
 {% extends 'calc/base.html' %}
 {% block content %}
 
-<h1 style="margin-bottom:12px;">공식 모음</h1>
-<p class="muted" style="margin-bottom:24px;">
+<h1 data-i18n=”formulas_h1” style=”margin-bottom:12px;”>공식 모음</h1>
+<p class=”muted” data-i18n=”formulas_intro” style=”margin-bottom:24px;”>
   수액/약물 계산에 자주 쓰이는 핵심 공식들을 모아두었습니다.
   실제 계산은 상단 탭의 “💧 수액 계산”, “💊 약물 계산” 메뉴에서 진행하세요.
 </p>
 
 <!-- 수액 기본 공식 -->
-<section style="margin-bottom:32px;">
-  <h2 style="font-size:20px; margin-bottom:8px;">1) 수액 · 시간 · 속도 관계</h2>
-  <div class="card">
-    <p class="muted">
+<section style=”margin-bottom:32px;”>
+  <h2 data-i18n=”formulas_sec1_title” style=”font-size:20px; margin-bottom:8px;”>1) 수액 · 시간 · 속도 관계</h2>
+  <div class=”card”>
+    <p class=”muted” data-i18n=”formulas_sec1_body”>
       • 시간으로 처방: 전체 수액량 ÷ 유지시간 = <b>mL/hr</b><br>
       • 유지시간: 전체 수액량 ÷ mL/hr<br>
       • 하루 수액 개수: 24 ÷ 유지시간<br>
@@ -23,10 +23,10 @@
 </section>
 
 <!-- 약물 기본 공식 -->
-<section style="margin-bottom:32px;">
-  <h2 style="font-size:20px; margin-bottom:8px;">2) 약물 계산 핵심 공식</h2>
-  <div class="card">
-    <p class="muted">
+<section style=”margin-bottom:32px;”>
+  <h2 data-i18n=”formulas_sec2_title” style=”font-size:20px; margin-bottom:8px;”>2) 약물 계산 핵심 공식</h2>
+  <div class=”card”>
+    <p class=”muted” data-i18n=”formulas_sec2_body”>
       • 1g = 1,000mg = 1,000,000mcg<br>
       • 1mL에 들어있는 약물량 = 총용량 ÷ 총부피<br>
       • A : B = C : D → A×D = B×C (외항×외항 = 내항×내항)<br>
@@ -36,13 +36,13 @@
 </section>
 
 <!-- sec/방울 표 -->
-<section style="margin-bottom:32px;">
-  <h2 style="font-size:20px; margin-bottom:8px;">3) 자주 쓰는 mL/hr → 초/1방울</h2>
-  <table class="table">
+<section style=”margin-bottom:32px;”>
+  <h2 data-i18n=”formulas_sec3_title” style=”font-size:20px; margin-bottom:8px;”>3) 자주 쓰는 mL/hr → 초/1방울</h2>
+  <table class=”table”>
     <thead>
       <tr>
         <th>mL/hr</th>
-        <th>초당 1방울</th>
+        <th data-i18n=”sec_per_drop_col”>초당 1방울</th>
       </tr>
     </thead>
     <tbody>
@@ -60,13 +60,13 @@
 
 <!-- 용량/시간별 속도 표 -->
 <section>
-  <h2 style="font-size:20px; margin-bottom:8px;">4) 자주 쓰는 용량·시간별 속도</h2>
-  <table class="table">
+  <h2 data-i18n=”formulas_sec4_title” style=”font-size:20px; margin-bottom:8px;”>4) 자주 쓰는 용량·시간별 속도</h2>
+  <table class=”table”>
     <thead>
       <tr>
-        <th>용량(mL)</th>
-        <th>시간</th>
-        <th>필요 속도(mL/hr)</th>
+        <th data-i18n=”volume_col”>용량(mL)</th>
+        <th data-i18n=”time_col”>시간</th>
+        <th data-i18n=”required_rate_col”>필요 속도(mL/hr)</th>
       </tr>
     </thead>
     <tbody>
