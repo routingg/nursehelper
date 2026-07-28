@@ -6,7 +6,7 @@
 
     // home.html
     home_title: { ko: "SEONA의 슬기로운 간호사 생활", en: "SEONA's Smart Nursing Life", zh: "SEONA的智慧护理生活" },
-    home_subtitle: { ko: "언제나 멋진 언니를 항상 응원해 🪄✨", en: "Always cheering for you 🪄✨", zh: "永远为你加油 🪄✨" },
+    home_subtitle: { ko: "언제나 멋진 언니를 항상 응원해 🪄✨", en: "Always cheering for you 🪄✨", zh: "永远支持你 🪄✨" },
     home_ivtime_title: { ko: "IV 주입 시간 계산", en: "IV Infusion Time", zh: "IV 输液时间计算" },
     home_ivtime_desc: { ko: "시작·종료 시간과 주입 간격을 기준으로<br>IV 주입 시간을 간편하게 계산해요.", en: "Quickly calculate IV infusion time<br>from start/end times and intervals.", zh: "根据开始·结束时间和间隔<br>轻松计算 IV 输液时间。" },
     home_infusion_title: { ko: "수액 계산", en: "Infusion Calculator", zh: "输液计算" },
